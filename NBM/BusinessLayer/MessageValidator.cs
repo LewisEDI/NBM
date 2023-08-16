@@ -1,22 +1,27 @@
 ﻿namespace NBM.Filters;
 using System.Text.RegularExpressions;
 
-public class MessageFilter
+using System;
+using System.Text.RegularExpressions;
+
+class MessageValidator
 {
     
-    public string MessageType(string message)
+    public MessageHandler ValidateMessage(string header, string message)
     {
+        MessageHandler messageHandler = null;
         string mType = string.Empty;
+        string validationMessage = string.Empty;
 
-        if (message.StartsWith("e"))
+        if (header.StartsWith("e"))
         {
-            mType = "email";
+            messageHandler = new EmailHandler();
         }
-        else if (message.StartsWith("s"))
+        else if (header.StartsWith("s"))
         {
-            mType = "sms";
+            messageHandler = new SMSHandler();
         }
-        else if (message.StartsWith("t"))
+        else if (header.StartsWith("t"))
         {
             mType = "tweet";
         }
@@ -24,22 +29,22 @@ public class MessageFilter
         {
             throw new Exception("Invalid message type, message received is " + message);
         }
-        
+
         string pattern = @"^[1-9]{9}$";
         string nextNineChars = message[1..];
         bool ninesValidation = Regex.IsMatch(nextNineChars, pattern);
 
         if (ninesValidation)
         {
-            Console.WriteLine("Valid message received");
         }
         else
         {
-            Console.WriteLine("no match!");
+            //Throw exception
+            validationMessage = "No match!";
         }
-        
-        return mType;
+
+        return messageHandler;
     }
-    
-   
 }
+
+

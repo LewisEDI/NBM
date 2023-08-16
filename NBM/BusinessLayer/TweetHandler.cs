@@ -16,6 +16,8 @@ public class TweetHandler : MessageHandler
     
     public override String ProcessMessage(String message)
     {
+        AbbreviationConverter Ac = new AbbreviationConverter();
+        
         if (!message.StartsWith("@"))
         {
             throw new Exception("Invalid tweet, tweet must start with twitter id prefixed with @");
@@ -28,7 +30,6 @@ public class TweetHandler : MessageHandler
         else
         {
             tId = tMsg[0];
-            Console.WriteLine("valid id");
         }
         
         StringBuilder body = new StringBuilder();
@@ -42,8 +43,10 @@ public class TweetHandler : MessageHandler
         }
         else
         {
-            tBody = body.ToString();
-            Console.WriteLine("valid body");
+            Console.WriteLine("raw string is " + body);
+            string conv = Ac.ConvertAbbreviations(body.ToString());
+            tBody = conv.ToString();
+            Console.WriteLine("converted string is " + conv);
         }
         
         string[] bArray = body.ToString().Split(new string[] { " ", Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
@@ -52,15 +55,15 @@ public class TweetHandler : MessageHandler
             if (bArray[i].StartsWith("@"))
             {
                 tMentions.Add(bArray[i].Trim());
-                Console.WriteLine("found hashtag");
+                
             }
             else if (bArray[i].StartsWith("#"))
             {
                 tHashtags.Add(bArray[i].Trim());
-                Console.WriteLine("found mention");
             }
         }
-
+      
+        Console.WriteLine("message returned is " + message);
         return message;
 
     }
