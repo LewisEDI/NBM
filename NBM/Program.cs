@@ -4,8 +4,15 @@ using NBM.Filters;
 
 MessageFilter filtertest = new MessageFilter();
 
-string test = "e999999999";
-string invtest = "e899999999";
+string test = "e123456789";
+string invtest = "ee99999999";
 
-filtertest.MessageType(test);
+filtertest.MessageType(invtest);
 
+//call process method from main function
+
+string tweet = "@lewisbogle,hello,#yolo,@somerandom";
+
+TweetHandler thandler = new TweetHandler();
+
+thandler.ProcessMessage(tweet);

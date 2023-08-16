@@ -26,12 +26,12 @@ public class MessageFilter
         }
         
         string pattern = @"^[1-9]{9}$";
-        string nextNineChars = mType[1..];
+        string nextNineChars = message[1..];
         bool ninesValidation = Regex.IsMatch(nextNineChars, pattern);
 
         if (ninesValidation)
         {
-            Console.WriteLine("match");
+            Console.WriteLine("Valid message received");
         }
         else
         {
