@@ -9,10 +9,14 @@ string invtest = "ee99999999";
 
 filtertest.MessageType(invtest);
 
-//call process method from main function
-
 string tweet = "@lewisbogle,hello,#yolo,@somerandom";
 
 TweetHandler thandler = new TweetHandler();
 
 thandler.ProcessMessage(tweet);
+
+AbbreviationConverter converter = new AbbreviationConverter();
+
+string inputString = "AAP";
+
+converter.ConvertAbbreviations(inputString);
