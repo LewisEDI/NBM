@@ -6,24 +6,26 @@ using System.Text.RegularExpressions;
 
 class MessageValidator
 {
-    
+    //create handlers
+    public TweetHandler TH = new TweetHandler();
+    public EmailHandler EH = new EmailHandler();
+    public SMSHandler SMSH = new SMSHandler();
     public MessageHandler ValidateMessage(string header, string message)
     {
         MessageHandler messageHandler = null;
-        string mType = string.Empty;
-        string validationMessage = string.Empty;
-
+        
         if (header.StartsWith("e"))
         {
-            messageHandler = new EmailHandler();
+            messageHandler = EH;
+            
         }
         else if (header.StartsWith("s"))
         {
-            messageHandler = new SMSHandler();
+            messageHandler = SMSH;
         }
         else if (header.StartsWith("t"))
         {
-            mType = "tweet";
+            messageHandler = TH;
         }
         else
         {
@@ -31,16 +33,12 @@ class MessageValidator
         }
 
         string pattern = @"^[1-9]{9}$";
-        string nextNineChars = message[1..];
+        string nextNineChars = header[1..];
         bool ninesValidation = Regex.IsMatch(nextNineChars, pattern);
 
-        if (ninesValidation)
+        if (!ninesValidation)
         {
-        }
-        else
-        {
-            //Throw exception
-            validationMessage = "No match!";
+            throw new Exception("Invalid message ID, message received is " + message);
         }
 
         return messageHandler;
