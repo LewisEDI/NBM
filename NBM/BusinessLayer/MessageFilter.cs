@@ -4,9 +4,10 @@ using System.Text.RegularExpressions;
 using System;
 using System.Text.RegularExpressions;
 
-class MessageValidator
+class MessageFilter
 {
     //create handlers
+    //maybe refactor this later to create single handler dependent on header. 
     public TweetHandler TH = new TweetHandler();
     public EmailHandler EH = new EmailHandler();
     public SMSHandler SMSH = new SMSHandler();

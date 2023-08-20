@@ -1,4 +1,6 @@
-﻿namespace NBM.Filters;
+﻿using System.Runtime.InteropServices.JavaScript;
+
+namespace NBM.Filters;
 using System.Text;
 
 /*
@@ -133,6 +135,19 @@ public class TweetHandler : MessageHandler
             Console.WriteLine("Mentions: " + string.Join(", ", tMentions));
 
             return modBody;
+        }
+
+        public List<List<string>> GetTweetLists()
+        {
+            List<List<string>> tLists= new List<List<string>>();
+                
+            List<string> mentionsList = tMentions;
+            List<string> hashtagList = tHashtags;
+            
+            tLists.Add(mentionsList);
+            tLists.Add(hashtagList);
+
+            return tLists;
         }
     }
 

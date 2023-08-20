@@ -11,7 +11,7 @@ public class MessageHandlerFacade
     
    public (string messageHeader, string messageBody) GetSanitizedMessage(string messageHeader, string messageBody)
    {
-        MessageValidator mv = new MessageValidator();
+        MessageFilter mv = new MessageFilter();
         
         //validate the message and create message handler of message type determined by ValidateMessage function
         var messageHandler = mv.ValidateMessage(messageHeader, messageBody);
@@ -34,7 +34,7 @@ public class MessageHandlerFacade
     
     //new method to call function in json class to create message
 
-    public void Create(object obj)
+    public void CreateJson(object obj)
     {
         JSONService js = new JSONService();
         js.WriteToJson(obj);

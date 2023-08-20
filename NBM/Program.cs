@@ -9,7 +9,7 @@ string header = "t123456789";
 
 MessageHandlerFacade mhf = new MessageHandlerFacade();
 var obj = mhf.GetSanitizedMessage(header, tweet);
-mhf.Create(obj);
+mhf.CreateJson(obj);
 
 
 
