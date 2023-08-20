@@ -6,7 +6,7 @@ class AbbreviationConverter
 {
     private Dictionary<string, string> abbreviationDict;
     private string csvFilePath = @"..\..\..\textwords.csv";
-    
+
     public AbbreviationConverter()
     {
         abbreviationDict = new Dictionary<string, string>();
@@ -35,9 +35,10 @@ class AbbreviationConverter
     {
         foreach (KeyValuePair<string, string> entry in abbreviationDict)
         {
-            input = input.Replace(entry.Key, entry.Value);
+            input = input.Replace(entry.Key, $"<{entry.Value}>");
         }
-        
+
         return input;
     }
 }
+
