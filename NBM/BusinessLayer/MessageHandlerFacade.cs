@@ -5,7 +5,7 @@ namespace NBM.Filters;
 
 public class MessageHandlerFacade
 {
-    
+    //use json 
     public List<string> messages = new List<string>();
     
     
@@ -29,6 +29,7 @@ public class MessageHandlerFacade
         var completeMessage = (messageHeader, cleanedMessage);
 
         return completeMessage;
+        //each time
       
     }
     

@@ -7,50 +7,42 @@ public class EmailHandler : MessageHandler
         
     }
     
+    public List<NatureOfIncident> noiList = new List<NatureOfIncident>();
+    public List<string> eUrlList = new List<string>();
     public string eHeader { get; set; }
     public string eBody { get; set; }
     public string eSubject { get; set; }
-    public eTypes eType { get; set; }
-    public  NoiInfo nOi { get; set; }
     public string eAddress { get; set; }
-    public List<string> eUrlList { get; set; }
-
-    public class NoiInfo
+    
+    
+    public enum NoiType
     {
-        public string CentreCode { get; set; }
-        public eNofi Type { get; set; }
+        BombThreat, CustomerAttack, DeviceDamage, PersonalInfoLeak, Raid, SportInjury,
+        StaffAbuse, StaffAttack, SuspiciousIncident, Terrorism, TheftOfProperties
     }
     
-    public enum eTypes
-    {
-        Sir, Standard
-    }
-    
-    public enum eNofi
-    {
-        BombThreat, CustomerAttack, DeviceDamage, PersonalInfoLeak, Raid, SportInjury, StaffAbuse, StaffAttack, SuspiciousIncident, Terrorism, TheftofProperties
-    }
-    
-  
     
     public override string ProcessMessage(string header, string message)
     {
         const string senderTag = "Sender:";
         const string subjectTag = "Subject:";
         const string messageTag = "Message:";
+        const string sortcodeTag = "Sort Code:";
+        const string noiTag = "Nature of Incident:";
 
         int senderIndex = message.IndexOf(senderTag, StringComparison.OrdinalIgnoreCase);
         int subjectIndex = message.IndexOf(subjectTag, StringComparison.OrdinalIgnoreCase);
         int messageIndex = message.IndexOf(messageTag, StringComparison.OrdinalIgnoreCase);
-
+        
         if (senderIndex == -1 || subjectIndex == -1 || messageIndex == -1)
         {
-            return "Missing required tags: Sender, Subject, or Message";
+            throw new Exception("Missing required tags: Sender, Subject, or Message");
         }
 
         string senderValue = GetTagValue(senderTag, message, senderIndex);
         string subjectValue = GetTagValue(subjectTag, message, subjectIndex);
         string messageValue = GetTagValue(messageTag, message, messageIndex);
+        
 
         if (!senderValue.Contains("@"))
         {
@@ -66,10 +58,75 @@ public class EmailHandler : MessageHandler
         {
             return "Message value must be less than or equal to 1028 characters";
         }
+        
+        //check for SIR
+        if (subjectValue.StartsWith("SIR"))
+        {
+            int scIndex = message.IndexOf(sortcodeTag, StringComparison.OrdinalIgnoreCase);
+            int noiIndex = message.IndexOf(noiTag, StringComparison.OrdinalIgnoreCase);
+            
+            bool subjectValid = ValidateSbjLineFormat(subjectValue);
+
+                string sc = GetTagValue(sortcodeTag, message, scIndex);
+                string noi = GetTagValue(noiTag, message, noiIndex);
+                bool validSC =  ValidateCentreCodeFormat(sc);
+                bool validNoi = IsValidNoiType(noi);
+                
+                if (subjectValid && validSC && validNoi)
+                {
+                    NatureOfIncident noiObj = new NatureOfIncident(sc, noi);
+                    noiList.Add((noiObj));
+                   
+                }
+                else
+                {
+                    throw new Exception("invalid SIR structure");
+                }
+            
+        }
+
+// Helper method to validate SIR subject line format
+        bool ValidateSbjLineFormat(string sbjLine)
+        {
+            /*if (sbjLine.Length <= 12)
+            {
+                throw new Exception("SIR subject line must be less than 12 chars");
+            }*/
+
+            string[] dateParts = sbjLine.Substring(4).Split('/');
+            if (dateParts.Length != 3 || !IsDigitsOnly(dateParts[0]) || !IsDigitsOnly(dateParts[1]) || !IsDigitsOnly(dateParts[2]))
+            {
+                throw new Exception("SIR subject line must be in the format of: SIR dd/mm/yy");
+            }
+
+            return true;
+        }
+
+// Helper method to validate centre code format
+        bool ValidateCentreCodeFormat(string centreCode)
+        {
+            /*if (centreCode.Length <= 9)
+            {
+                throw new Exception("Centre code must be in the format of: nn-nnn-nn (n is a number).");
+            }*/
+
+            string[] codeParts = centreCode.Split('-');
+            if (codeParts.Length != 3 || !IsDigitsOnly(codeParts[0]) || !IsDigitsOnly(codeParts[1]) || !IsDigitsOnly(codeParts[2]))
+            {
+                throw new Exception("Centre code must be in the format of: nn-nnn-nn (n is a number).");
+            }
+
+            return true;
+        }
+
+// Helper method to check if a string consists of digits only
+        bool IsDigitsOnly(string input)
+        {
+            return input.All(char.IsDigit);
+        }
 
         messageValue = RedactHyperlinks(messageValue);
-
-
+        
         return $"Sender: {senderValue}\nSubject: {subjectValue}\nMessage: {messageValue}";
     }
 
@@ -101,6 +158,11 @@ public class EmailHandler : MessageHandler
         }
 
         return redactedMessage;
+    }
+    
+    public bool IsValidNoiType(string value)
+    {
+        return Enum.TryParse(typeof(NoiType), value, out _);
     }
     
 }
