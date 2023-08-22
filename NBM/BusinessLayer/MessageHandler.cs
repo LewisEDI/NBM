@@ -2,5 +2,5 @@
 
 public abstract class MessageHandler
 {
-    public abstract String ProcessMessage(String message);
+    public abstract String ProcessMessage(String header, String message);
 }

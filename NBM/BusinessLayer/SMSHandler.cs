@@ -5,7 +5,7 @@ public class SMSHandler : MessageHandler
     
     public string smsSender { get; set; }
     public string smsBody { get; set; }
-    public override String ProcessMessage(String message)
+    public override String ProcessMessage(String header, String message)
     {
         AbbreviationConverter smsAc = new AbbreviationConverter();
 

@@ -20,7 +20,7 @@ public class MessageHandlerFacade
         
         //create var cleanedMessage which is the sanitized message from ProcessMessage function and
         //add it to the messages list
-        var cleanedMessage =  messageHandler.ProcessMessage(messageBody);
+        var cleanedMessage =  messageHandler.ProcessMessage(messageHeader, messageBody);
         messages.Add(cleanedMessage);
         
         //create var complete message to be returned as this contains the message header and the sanitized message

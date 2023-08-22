@@ -7,6 +7,7 @@ public class EmailHandler : MessageHandler
         
     }
     
+    public string eHeader { get; set; }
     public string eBody { get; set; }
     public string eSubject { get; set; }
     public eTypes eType { get; set; }
@@ -32,7 +33,7 @@ public class EmailHandler : MessageHandler
     
   
     
-    public override string ProcessMessage(string message)
+    public override string ProcessMessage(string header, string message)
     {
         const string senderTag = "Sender:";
         const string subjectTag = "Subject:";
@@ -67,6 +68,7 @@ public class EmailHandler : MessageHandler
         }
 
         messageValue = RedactHyperlinks(messageValue);
+        
 
         return $"Sender: {senderValue}\nSubject: {subjectValue}\nMessage: {messageValue}";
     }
@@ -99,5 +101,20 @@ public class EmailHandler : MessageHandler
         }
 
         return redactedMessage;
+    }
+
+    public void StoreUrls(string header, List<string> urlList)
+    {
+        if (urlList.Count != 0)
+        {
+            TextWriter tw = new StreamWriter("QuarantinedURls" + header + ".txt");
+
+            foreach (string str in urlList)
+            {
+                tw.WriteLine(str);
+            }
+
+            tw.Close();
+        }
     }
 }

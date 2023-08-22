@@ -82,7 +82,7 @@ public class TweetHandler : MessageHandler
         public List<string> tHashtags { get; set; } = new List<string>();
         public List<string> tMentions { get; set; } = new List<string>();
 
-        public override string ProcessMessage(string message)
+        public override string ProcessMessage(string header, string message)
         {
             string modBody = string.Empty;
             AbbreviationConverter Ac = new AbbreviationConverter();

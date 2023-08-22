@@ -18,7 +18,6 @@ class MessageFilter
         if (header.StartsWith("e"))
         {
             messageHandler = EH;
-            
         }
         else if (header.StartsWith("s"))
         {
