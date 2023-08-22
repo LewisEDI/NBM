@@ -34,7 +34,7 @@ public class EmailHandler : MessageHandler
     
     public override string ProcessMessage(string message)
     {
-          const string senderTag = "Sender:";
+        const string senderTag = "Sender:";
         const string subjectTag = "Subject:";
         const string messageTag = "Message:";
 

@@ -23,7 +23,7 @@ public class MessageHandlerFacade
         var cleanedMessage =  messageHandler.ProcessMessage(messageBody);
         messages.Add(cleanedMessage);
         
-        //create var completemessage to be returned as this contains the message header and the sanitized message
+        //create var complete message to be returned as this contains the message header and the sanitized message
         //this is because this var can then be used for the json serializer to create a json including 
         //the unique message id. 
         var completeMessage = (messageHeader, cleanedMessage);
