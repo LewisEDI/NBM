@@ -13,7 +13,7 @@ public class EmailHandler : MessageHandler
     public eTypes eType { get; set; }
     public  NoiInfo nOi { get; set; }
     public string eAddress { get; set; }
-    public List<string> eUrList { get; set; }
+    public List<string> eUrlList { get; set; }
 
     public class NoiInfo
     {
@@ -68,7 +68,7 @@ public class EmailHandler : MessageHandler
         }
 
         messageValue = RedactHyperlinks(messageValue);
-        
+
 
         return $"Sender: {senderValue}\nSubject: {subjectValue}\nMessage: {messageValue}";
     }
@@ -97,24 +97,10 @@ public class EmailHandler : MessageHandler
         foreach (System.Text.RegularExpressions.Match match in 
             System.Text.RegularExpressions.Regex.Matches(message, urlPattern))
         {
-            eUrList.Add(match.Value);
+            eUrlList.Add(match.Value);
         }
 
         return redactedMessage;
     }
-
-    public void StoreUrls(string header, List<string> urlList)
-    {
-        if (urlList.Count != 0)
-        {
-            TextWriter tw = new StreamWriter("QuarantinedURls" + header + ".txt");
-
-            foreach (string str in urlList)
-            {
-                tw.WriteLine(str);
-            }
-
-            tw.Close();
-        }
-    }
+    
 }

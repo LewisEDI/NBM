@@ -50,4 +50,19 @@ public class MessageHandlerFacade
     
     //public List<String> GetEmailLists
 
+    public void StoreUrls(EmailHandler eh)
+    {
+        if (eh.eUrlList.Count != 0)
+        {
+            TextWriter tw = new StreamWriter("QuarantinedURls" + eh.eHeader + ".txt");
+
+            foreach (string str in eh.eUrlList)
+            {
+                tw.WriteLine(str);
+            }
+
+            tw.Close();
+        }
+    }
+
 }
