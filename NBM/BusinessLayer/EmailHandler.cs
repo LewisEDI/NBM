@@ -29,6 +29,7 @@ public class EmailHandler : MessageHandler
         const string messageTag = "Message:";
         const string sortcodeTag = "Sort Code:";
         const string noiTag = "Nature of Incident:";
+        eHeader = header;
 
         int senderIndex = message.IndexOf(senderTag, StringComparison.OrdinalIgnoreCase);
         int subjectIndex = message.IndexOf(subjectTag, StringComparison.OrdinalIgnoreCase);
@@ -127,6 +128,7 @@ public class EmailHandler : MessageHandler
 
         messageValue = RedactHyperlinks(messageValue);
         
+        Console.WriteLine("lewis " + $"Sender: {senderValue}\nSubject: {subjectValue}\nMessage: {messageValue}");
         return $"Sender: {senderValue}\nSubject: {subjectValue}\nMessage: {messageValue}";
     }
 
@@ -156,7 +158,7 @@ public class EmailHandler : MessageHandler
         {
             eUrlList.Add(match.Value);
         }
-
+        
         return redactedMessage;
     }
     

@@ -15,14 +15,16 @@ RunTests();
 
  static void RunTests()
         {
-            TestValidMessage();
-            TestValidSIR();
+            //TestValidMessage();
+            //TestValidSIR();
             /*TestInvalidSender();
             TestInvalidSubjectLength();
             TestInvalidMessageLength();
             TestValidSIRSubject();
             TestInvalidSIRSubject();*/
-            // Add more test cases here
+            //TestAddHashtagsAndMentions();
+            //TestQuarantinedUrls();
+            TestStoreUrls2();
         }
 
         static void TestValidMessage()
@@ -86,6 +88,52 @@ RunTests();
             Console.WriteLine(result);
         }
         */
-    
 
+static void TestAddHashtagsAndMentions()
+{
+    TweetHandler tweetHandler = new TweetHandler();
+    string header = "t123456789";
+    string sample = "@user123,Hello,#important update,@john.doe";
+    string result = tweetHandler.ProcessMessage(header, sample);
+    Console.WriteLine("Hashtags:");
+    foreach (string hashtag in tweetHandler.tHashtags)
+    {
+        Console.WriteLine(hashtag);
+    }
+
+    Console.WriteLine("Mentions:");
+    foreach (string mention in tweetHandler.tMentions)
+    {
+        Console.WriteLine(mention);
+    }
+}
+
+static void TestQuarantinedUrls()
+{
+    EmailHandler emailHandler = new EmailHandler();
+    string header = "e123456789";
+    string sample = "Sender:test@example.com\nSubject:Test Subject\nMessage:Check out this link: https://example.com";
+    string result = emailHandler.ProcessMessage(header, sample);
+            
+    Console.WriteLine("Quarantined URLs:");
+    foreach (string quarantinedUrl in emailHandler.eUrlList)
+    {
+        Console.WriteLine(quarantinedUrl);
+    }
+}
+
+static void TestStoreUrls2()
+{
+    // Simulate email message
+    string header = "e123456789";
+    string messageBody = "Sender:test@example.com\nSubject:Test Subject\nMessage:Check out these links: https://example1.com, https://example2.com";
+
+    MessageHandlerFacade mhf = new MessageHandlerFacade();
+    var obj = mhf.GetSanitizedMessage(header, messageBody);
+
+    // Call the StoreUrls2 method
+    mhf.StoreUrls2();
+
+    Console.WriteLine("URLs stored successfully.");
+}
 

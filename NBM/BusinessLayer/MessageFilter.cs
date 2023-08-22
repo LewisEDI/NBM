@@ -11,6 +11,9 @@ class MessageFilter
     public TweetHandler TH = new TweetHandler();
     public EmailHandler EH = new EmailHandler();
     public SMSHandler SMSH = new SMSHandler();
+    
+    public EmailHandler GetEH() => EH;
+
     public MessageHandler ValidateMessage(string header, string message)
     {
         MessageHandler messageHandler = null;
