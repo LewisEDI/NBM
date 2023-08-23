@@ -1,8 +1,8 @@
 ﻿namespace NBM.Filters;
 
-public class NatureOfIncident
+public class SIR
 {
-    public NatureOfIncident(string sortCode, string incidentType)
+    public SIR(string sortCode, string incidentType)
     {
         SortCode = sortCode;
         IncidentType = incidentType;

@@ -132,7 +132,7 @@ static void TestStoreUrls2()
     var obj = mhf.GetSanitizedMessage(header, messageBody);
 
     // Call the StoreUrls2 method
-    mhf.StoreUrls2();
+    mhf.StoreUrls();
 
     Console.WriteLine("URLs stored successfully.");
 }

@@ -13,6 +13,7 @@ class MessageFilter
     public SMSHandler SMSH = new SMSHandler();
     
     public EmailHandler GetEH() => EH;
+    public TweetHandler GetTH() => TH;
 
     public MessageHandler ValidateMessage(string header, string message)
     {

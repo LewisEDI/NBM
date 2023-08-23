@@ -8,7 +8,7 @@ public class MessageHandlerFacade
 {
     //use json 
     public List<string> messages = new List<string>();
-    MessageFilter mv = new MessageFilter();
+    MessageFilter mf = new MessageFilter();
     
     
    public (string messageHeader, string messageBody) GetSanitizedMessage(string messageHeader, string messageBody)
@@ -16,7 +16,7 @@ public class MessageHandlerFacade
         //MessageFilter mv = new MessageFilter();
         
         //validate the message and create message handler of message type determined by ValidateMessage function
-        var messageHandler = mv.ValidateMessage(messageHeader, messageBody);
+        var messageHandler = mf.ValidateMessage(messageHeader, messageBody);
          
        
         
@@ -44,6 +44,30 @@ public class MessageHandlerFacade
     }
     
     //end session calls this
+
+    public List<SIR> GetSir()
+    {
+        var emailObj = mf.GetEH();
+        return emailObj.sirList;
+    }
+
+    public List<string> GetUrls()
+    {
+        var emailObj = mf.GetEH();
+        return emailObj.eUrlList;
+    }
+
+    public List<string> GetHashtags()
+    {
+        var twitterobj = mf.GetTH();
+        return twitterobj.tHashtags;
+    }
+    
+    public List<string> GetMentions()
+    {
+        var twitterobj = mf.GetTH();
+        return twitterobj.tMentions;
+    }
     
     //getlists
     //call th.getlists
@@ -52,25 +76,11 @@ public class MessageHandlerFacade
     //return lists
     
     //public List<String> GetEmailLists
-
-    public void StoreUrls(EmailHandler eh)
-    {
-        if (eh.eUrlList.Count != 0)
-        {
-            TextWriter tw = new StreamWriter("QuarantinedURls" + eh.eHeader + ".txt");
-
-            foreach (string str in eh.eUrlList)
-            {
-                tw.WriteLine(str);
-            }
-
-            tw.Close();
-        }
-    }
     
-    public void StoreUrls2()
+    
+    public void StoreUrls()
     {
-        var ehh = mv.GetEH();
+        var ehh = mf.GetEH();
         if (ehh.eUrlList.Count != 0)
         {
             Console.WriteLine("count is not 0");

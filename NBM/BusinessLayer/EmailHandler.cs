@@ -7,7 +7,7 @@ public class EmailHandler : MessageHandler
         
     }
     
-    public List<NatureOfIncident> noiList = new List<NatureOfIncident>();
+    public List<SIR> sirList = new List<SIR>();
     public List<string> eUrlList = new List<string>();
     public string eHeader { get; set; }
     public string eBody { get; set; }
@@ -75,8 +75,8 @@ public class EmailHandler : MessageHandler
                 
                 if (subjectValid && validSC && validNoi)
                 {
-                    NatureOfIncident noiObj = new NatureOfIncident(sc, noi);
-                    noiList.Add((noiObj));
+                    SIR noiObj = new SIR(sc, noi);
+                    sirList.Add((noiObj));
                    
                 }
                 else
