@@ -30,6 +30,9 @@ public class MessageHandlerFacade
         //the unique message id. 
         var completeMessage = (messageHeader, cleanedMessage);
 
+        string message = completeMessage.ToString();
+        messages.Add(message);
+
         return completeMessage;
         //each time
       
@@ -76,6 +79,11 @@ public class MessageHandlerFacade
     //return lists
     
     //public List<String> GetEmailLists
+
+    public void addMessages()
+    {
+        
+    }
     
     
     public void StoreUrls()
